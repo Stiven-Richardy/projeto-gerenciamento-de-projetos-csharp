@@ -59,6 +59,7 @@ namespace projeto_gerenciamento_de_projetos
                         pesquisarProjeto();
                         break;
                     case 3:
+                        removerProjeto();
                         break;
                     case 4:
                         break;
@@ -117,6 +118,18 @@ namespace projeto_gerenciamento_de_projetos
                     $" Total de Tarefas Fechadas: {pesquisaProjeto.totalFechadas()}");
                 Utils.MensagemSucesso("Projeto encontrado!");
             }
+            else
+                Utils.MensagemErro("Projeto não encontrado.");
+        }
+
+        static void removerProjeto()
+        {
+            Utils.Titulo("REMOVER PROJETO (1/2)");
+            Console.Write(" Digite o Nome do Projeto: ");
+            string nome = Console.ReadLine();
+            Projeto removeProjeto = new Projeto(nome);
+            if (itens.remover(removeProjeto) && removeProjeto.Tarefas.Count() == 0)
+                Utils.MensagemSucesso("Projeto removido!");
             else
                 Utils.MensagemErro("Projeto não encontrado.");
         }
