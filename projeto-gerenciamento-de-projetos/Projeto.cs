@@ -8,6 +8,7 @@ namespace projeto_gerenciamento_de_projetos
 {
     internal class Projeto
     {
+        static int idAtual = 0;
         private int id;
         private string nome;
         private List<Tarefa> tarefas = new List<Tarefa>();
@@ -16,9 +17,9 @@ namespace projeto_gerenciamento_de_projetos
         public string Nome { get => nome; set => nome = value; }
         public List<Tarefa> Tarefas { get => tarefas; set => tarefas = value; }
 
-        public Projeto(int id, string nome)
+        public Projeto(string nome)
         {
-            Id = id;
+            Id = idAtual++;
             Nome = nome;
         }
 

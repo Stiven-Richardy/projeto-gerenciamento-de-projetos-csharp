@@ -23,6 +23,7 @@ namespace projeto_gerenciamento_de_projetos
 {
     internal class Program
     {
+        public static Projetos itens = new Projetos();
         static void Main(string[] args)
         {
             int seletor = -1;
@@ -52,6 +53,7 @@ namespace projeto_gerenciamento_de_projetos
                         Console.WriteLine(" Programa finalizado!");
                         break;
                     case 1:
+                        adicionarProjeto();
                         break;
                     case 2:
                         break;
@@ -78,6 +80,18 @@ namespace projeto_gerenciamento_de_projetos
                         break;
                 }
             }
+        }
+
+        static void adicionarProjeto()
+        {
+            Utils.Titulo("ADICIONAR PROJETO");
+            Console.Write(" Digite o Nome do Projeto: ");
+            string nome = Console.ReadLine();
+            Projeto novoProjeto = new Projeto(nome);
+            if(itens.adicionar(novoProjeto))
+                Utils.MensagemSucesso("Projeto adicionado!");
+            else
+                Utils.MensagemErro("O projeto já existe.");
         }
     }
 }
