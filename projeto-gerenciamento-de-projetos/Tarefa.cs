@@ -8,6 +8,7 @@ namespace projeto_gerenciamento_de_projetos
 {
     internal class Tarefa
     {
+        static int idAtual = 0;
         private int id;
         private string titulo;
         private string descricao;
@@ -33,6 +34,16 @@ namespace projeto_gerenciamento_de_projetos
             Status = status;
             DataCriacao = dataCriacao;
             DataConclusao = dataConclusao;
+        }
+        
+        public Tarefa(string titulo, string descricao, int prioridade)
+        {
+            Id = idAtual++;
+            Titulo = titulo;
+            Descricao = descricao;
+            Prioridade = prioridade;
+            Status = "Aberta";
+            DataCriacao = DateTime.Now;
         }
 
         public void concluir()

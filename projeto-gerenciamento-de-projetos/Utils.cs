@@ -29,6 +29,16 @@ namespace projeto_gerenciamento_de_projetos
             }
             return doubleValido;
         }
+        public static int lerMinMax(string entrada, int min, int max, string msgErro)
+        {
+            bool converteu = int.TryParse(entrada, out int intValido);
+            while (!converteu || intValido < min || intValido > max)
+            {
+                Console.Write(msgErro);
+                converteu = int.TryParse(Console.ReadLine(), out intValido);
+            }
+            return intValido;
+        }
 
         public static void Titulo(string titulo)
         {
