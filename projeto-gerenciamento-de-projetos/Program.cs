@@ -53,6 +53,7 @@ namespace projeto_gerenciamento_de_projetos
                         Console.WriteLine(" Programa finalizado!");
                         break;
                     case 1:
+                        adicionarProjeto();
                         break;
                     case 2:
                         break;
@@ -92,9 +93,18 @@ namespace projeto_gerenciamento_de_projetos
             string desc = Console.ReadLine();
             Console.Write("Digite a prioridade  (1- Alta, 2- Média, 3- Baixa): ");
             Utils.lerMinMax(Console.ReadLine(), 1, 3, "Prioridade inválida. Digite a prioridade: ");
-            
+        }
 
-
+        static void adicionarProjeto()
+        {
+            Utils.Titulo("ADICIONAR PROJETO");
+            Console.Write(" Digite o Nome do Projeto: ");
+            string nome = Console.ReadLine();
+            Projeto novoProjeto = new Projeto(nome);
+            if(itens.adicionar(novoProjeto))
+                Utils.MensagemSucesso("Projeto adicionado!");
+            else
+                Utils.MensagemErro("O projeto já existe.");
         }
     }
 }
