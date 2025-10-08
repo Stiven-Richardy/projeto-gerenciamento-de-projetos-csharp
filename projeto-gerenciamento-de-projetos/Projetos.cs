@@ -16,13 +16,13 @@ namespace projeto_gerenciamento_de_projetos
 
         public bool adicionar(Projeto p)
         {
-            bool projetoAdicionado;
+            bool projetoAdicionado = false;
             if (buscar(p) == null)
             {
                 itens.Add(p);
                 projetoAdicionado = true;
             }
-            return true;
+            return projetoAdicionado;
         }
 
         public bool remover(Projeto p)

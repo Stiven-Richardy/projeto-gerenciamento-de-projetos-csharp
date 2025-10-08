@@ -56,6 +56,7 @@ namespace projeto_gerenciamento_de_projetos
                         adicionarProjeto();
                         break;
                     case 2:
+                        pesquisarProjeto();
                         break;
                     case 3:
                         break;
@@ -92,6 +93,32 @@ namespace projeto_gerenciamento_de_projetos
                 Utils.MensagemSucesso("Projeto adicionado!");
             else
                 Utils.MensagemErro("O projeto já existe.");
+        }
+
+        static void pesquisarProjeto()
+        {
+            Utils.Titulo("PESQUISAR PROJETO (1/2)");
+            Console.Write(" Digite o Nome do Projeto: ");
+            string nome = Console.ReadLine();
+            Projeto pesquisaProjeto = new Projeto(nome);
+            if (itens.buscar(pesquisaProjeto) != null)
+            {
+                Utils.Titulo("PESQUISAR PROJETO (2/2)");
+                Console.WriteLine(" DADOS DO PROJETO: \n" +
+                    $" Id: {pesquisaProjeto.Id}\n" +
+                    $" Nome: {pesquisaProjeto.Nome}\n" +
+                    $"\n TAREFAS DO PROJETO: ");
+                foreach (Tarefa t in pesquisaProjeto.Tarefas)
+                {
+                    Console.WriteLine($"Tarefa: {t.Descricao}\n" +
+                        $"Status: {t.Status}\n");
+                }
+                Console.WriteLine($"\n Total de Tarefas Abertas: {pesquisaProjeto.totalAberta()}\n" +
+                    $" Total de Tarefas Fechadas: {pesquisaProjeto.totalFechadas()}");
+                Utils.MensagemSucesso("Projeto encontrado!");
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado.");
         }
     }
 }
