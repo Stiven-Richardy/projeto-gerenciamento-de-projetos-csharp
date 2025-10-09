@@ -16,6 +16,12 @@ namespace projeto_gerenciamento_de_projetos
 
         public bool adicionar(Projeto p)
         {
+            bool projetoAdicionado;
+            if (buscar(p) == null)
+            {
+                itens.Add(p);
+                projetoAdicionado = true;
+            }
             return true;
         }
 
@@ -26,7 +32,8 @@ namespace projeto_gerenciamento_de_projetos
 
         public Projeto buscar(Projeto p)
         {
-            return p;
+            Projeto projetoAchado = itens.Find(pp => pp.Nome == p.Nome);
+            return projetoAchado;
         }
 
         public List<Projeto> listar()
