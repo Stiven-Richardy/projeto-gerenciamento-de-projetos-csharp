@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,13 @@ namespace projeto_gerenciamento_de_projetos
 
         public void adicionarTarefa(Tarefa t)
         {
+            if (buscarTarefa(t) == null)
+            {
+                Tarefas.Add(t);
+                Utils.MensagemSucesso("Tarefa adicionada");
+            }
+            else
+                Utils.MensagemErro("Tarefa já existe no projeto");
 
         }
 
@@ -35,7 +43,7 @@ namespace projeto_gerenciamento_de_projetos
 
         public Tarefa buscarTarefa(Tarefa t)
         {
-            return t;
+            return Tarefas.Find(tr => tr.Titulo == t.Titulo);
         }
 
         public List<Tarefa> tarefasPorStatus(string s)

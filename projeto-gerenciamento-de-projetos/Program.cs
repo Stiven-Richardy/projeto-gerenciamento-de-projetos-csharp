@@ -62,6 +62,7 @@ namespace projeto_gerenciamento_de_projetos
                         removerProjeto();
                         break;
                     case 4:
+                        adicionarTarefa();
                         break;
                     case 5:
                         break;
@@ -95,6 +96,28 @@ namespace projeto_gerenciamento_de_projetos
             else
                 Utils.MensagemErro("O projeto já existe.");
         }
+        static void adicionarTarefa()
+        {
+            Utils.Titulo("ADICIONAR TAREFA");
+            Console.Write("Informe o nome do projeto: ");
+            string nome = Console.ReadLine();
+            Projeto projeto = itens.buscar(new Projeto(nome));
+            if ( projeto != null)
+            {
+                Console.Write("Informe o título da tarefa: ");
+                string titulo = Console.ReadLine();
+                Console.Write("Digite a descrição da tarefa: ");
+                string desc = Console.ReadLine();
+                Console.Write("Digite a prioridade  (1- Alta, 2- Média, 3- Baixa): ");
+                int prioridade = Utils.lerMinMax(Console.ReadLine(), 1, 3, "Prioridade inválida. Digite a prioridade: ");
+                Tarefa tarefa = new Tarefa(titulo, desc, prioridade);
+                projeto.adicionarTarefa(tarefa);
+                
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado.");
+        }
+
 
         static void pesquisarProjeto()
         {
