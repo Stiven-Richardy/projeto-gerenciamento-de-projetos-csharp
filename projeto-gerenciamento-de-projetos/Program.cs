@@ -68,6 +68,7 @@ namespace projeto_gerenciamento_de_projetos
                         concluirTarefa();
                         break;
                     case 6:
+                        cancelarTarefa();
                         break;
                     case 7:
                         break;
@@ -142,7 +143,33 @@ namespace projeto_gerenciamento_de_projetos
 
         }
 
+        static void cancelarTarefa()
+        {
+            Utils.Titulo("CANCELAR TAREFA");
+            Console.Write("Informe o nome do projeto: ");
+            string nome = Console.ReadLine();
+            Projeto projeto = itens.buscar(new Projeto(nome));
+            if (projeto != null)
+            {
+                Console.Write("Informe o título da tarefa: ");
+                string titulo = Console.ReadLine();
+                Tarefa tarefa = projeto.buscarTarefa(new Tarefa(titulo));
+                if (tarefa != null)
+                {
+                    if (tarefa.Status != "Fechada" && tarefa.Status != "Cancelada")
+                    {
+                        tarefa.cancelar();
+                    }
+                    else
+                        Utils.MensagemErro($"Não é possível fechar uma tarefa {tarefa.Status}");
+                }
+                else
+                    Utils.MensagemErro("Tarefa não enontrada");
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado.");
 
+        }
         static void pesquisarProjeto()
         {
             Utils.Titulo("PESQUISAR PROJETO (1/2)");
