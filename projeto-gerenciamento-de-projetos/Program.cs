@@ -121,6 +121,7 @@ namespace projeto_gerenciamento_de_projetos
 
         static void concluirTarefa()
         {
+            Utils.Titulo("CONCLUIR TAREFA");
             Console.Write("Informe o nome do projeto: ");
             string nome = Console.ReadLine();
             Projeto projeto = itens.buscar(new Projeto(nome));
