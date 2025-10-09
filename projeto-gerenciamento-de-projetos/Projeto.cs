@@ -48,12 +48,12 @@ namespace projeto_gerenciamento_de_projetos
 
         public List<Tarefa> tarefasPorStatus(string s)
         {
-            return tarefas;
+            return Tarefas.FindAll(tr => tr.Status == s);
         }
 
         public List<Tarefa> tarefasPorPrioridade(int p)
         {
-            return tarefas;
+            return Tarefas.FindAll(tr => tr.Prioridade == p);
         }
 
         public int totalAberta()
