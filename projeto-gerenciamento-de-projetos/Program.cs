@@ -133,7 +133,12 @@ namespace projeto_gerenciamento_de_projetos
                 Tarefa tarefa = projeto.buscarTarefa(new Tarefa(titulo));
                 if (tarefa != null)
                 {
-                    tarefa.concluir();
+                    if (tarefa.Status == "Aberta")
+                    {
+                        tarefa.concluir();
+                    }
+                    else
+                        Utils.MensagemErro($"Não é possível fechar uma Tarefa {tarefa.Status}");
                 }
                 else
                     Utils.MensagemErro("Tarefa não enontrada");
@@ -161,7 +166,7 @@ namespace projeto_gerenciamento_de_projetos
                         tarefa.cancelar();
                     }
                     else
-                        Utils.MensagemErro($"Não é possível fechar uma tarefa {tarefa.Status}");
+                        Utils.MensagemErro($"Não é possível fechar uma Tarefa {tarefa.Status}");
                 }
                 else
                     Utils.MensagemErro("Tarefa não enontrada");
