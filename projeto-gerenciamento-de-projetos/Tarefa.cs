@@ -61,7 +61,9 @@ namespace projeto_gerenciamento_de_projetos
 
         public void reabrir()
         {
-
+            this.DataConclusao = null;
+            this.Status = "Aberta";
+            Utils.MensagemSucesso($"Tarefa '{this.Titulo}' concluída");
         }
     }
 }
