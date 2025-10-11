@@ -71,6 +71,7 @@ namespace projeto_gerenciamento_de_projetos
                         cancelarTarefa();
                         break;
                     case 7:
+                        reabrirTarefa();
                         break;
                     case 8:
                         break;
@@ -151,6 +152,33 @@ namespace projeto_gerenciamento_de_projetos
 
         }
 
+        static void reabrirTarefa()
+        {
+            Utils.Titulo("REABRIR TAREFA");
+            Console.Write("Informe o nome do projeto: ");
+            string nome = Console.ReadLine();
+            Projeto projeto = itens.buscar(new Projeto(nome));
+            if (projeto != null)
+            {
+                Console.Write("Informe o título da tarefa: ");
+                string titulo = Console.ReadLine();
+                Tarefa tarefa = projeto.buscarTarefa(new Tarefa(titulo));
+                if (tarefa != null)
+                {
+                    if (tarefa.Status == "Concluída")
+                    {
+                        tarefa.reabrir();
+                    }
+                    else
+                        Utils.MensagemErro($"Não é possível reabrir uma Tarefa {tarefa.Status}");
+                }
+                else
+                    Utils.MensagemErro("Tarefa não enontrada");
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado.");
+        }
+                
         static void cancelarTarefa()
         {
             Utils.Titulo("CANCELAR TAREFA");
@@ -176,8 +204,8 @@ namespace projeto_gerenciamento_de_projetos
             }
             else
                 Utils.MensagemErro("Projeto não encontrado.");
-
         }
+        
         static void pesquisarProjeto()
         {
             Utils.Titulo("PESQUISAR PROJETO (1/2)");
