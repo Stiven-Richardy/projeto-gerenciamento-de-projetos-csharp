@@ -58,12 +58,12 @@ namespace projeto_gerenciamento_de_projetos
 
         public int totalAberta()
         {
-            return 0;
+            return Tarefas.Count(t => t.Status == "Aberta");
         }
 
         public int totalFechadas()
         {
-            return 0;
+            return Tarefas.Count(t => t.Status == "Fechada");
         }
     }
 }

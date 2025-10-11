@@ -74,6 +74,7 @@ namespace projeto_gerenciamento_de_projetos
                         reabrirTarefa();
                         break;
                     case 8:
+                        listarTarefas();
                         break;
                     case 9:
                         filtrarTarefasPorProjeto();
@@ -152,6 +153,46 @@ namespace projeto_gerenciamento_de_projetos
 
         }
 
+        static void listarTarefas()
+        {
+            Utils.Titulo("LISTAR TAREFAS");
+            Console.Write("Informe o nome do projeto: ");
+            string nome = Console.ReadLine();
+            Projeto projeto = itens.buscar(new Projeto(nome));
+            if (projeto != null)
+            {
+                int qtdTarefas = projeto.totalAberta() + projeto.totalFechadas();
+                if (qtdTarefas > 0)
+                {
+                    Console.WriteLine($"Tarefas de {projeto.Nome}\n");
+                    foreach (Tarefa trf in projeto.Tarefas)
+                    {
+                        if (trf.Status != "Cancelada")
+                        {
+                            string prioridade = trf.Prioridade == 1 ? "Alta" : trf.Prioridade == 2 ? "Média" : "Baixa";
+                            Console.WriteLine($"Titulo: {trf.Titulo}\n" +
+                                $"Descrição: {trf.Descricao}\n" +
+                                $"Prioridade: {prioridade}\n" +
+                                $"Status: {trf.Status} \n" +
+                                $"Inicio: {trf.DataCriacao}\n");
+                            if (trf.DataConclusao != null)
+                            {
+                                Console.WriteLine($"Finalizado: {trf.DataConclusao}");
+                            }
+                        }
+                    }
+                    Utils.MensagemSucesso(" Listando tarefas abertas e concluidas...");
+                }
+                else
+                {
+                    Utils.MensagemErro("Nenhuma tarefa no projeto");
+                }
+
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado");
+        }
+      
         static void reabrirTarefa()
         {
             Utils.Titulo("REABRIR TAREFA");
