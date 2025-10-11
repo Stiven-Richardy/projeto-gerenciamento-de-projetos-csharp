@@ -83,6 +83,7 @@ namespace projeto_gerenciamento_de_projetos
                         filtrarTarefas();
                         break;
                     case 11:
+                        resumoGeral();
                         break;
                     default:
                         Utils.MensagemErro("Digite um número de 0-11!");
@@ -348,6 +349,28 @@ namespace projeto_gerenciamento_de_projetos
             }
             else
                 Utils.MensagemErro("Projeto não encontrado.");
+        }
+      
+        static void resumoGeral()
+        {
+            Utils.Titulo("RESUMO GERAL");
+            double totalAbertas = 0;
+            double totalFechadas = 0;
+            double percConclusao = 0;
+            foreach (Projeto pjt in itens.Itens)
+            {
+                totalAbertas += pjt.totalAberta();
+                totalFechadas += pjt.totalFechadas();
+            }
+            if (totalFechadas > 0)
+            {
+                percConclusao = 100 * totalAbertas / totalFechadas;
+            }
+            Console.WriteLine($"Total de projetos: {itens.Itens.Count()}\n" +
+                $"Quantidade de tarefas abertas: {totalAbertas}\n" +
+                $"Quantidade de tarefas fechadas: {totalFechadas}\n" +
+                $"Percentual de conclusão: {percConclusao.ToString("f")}\n");
+            Utils.MensagemSucesso("Visão geral de todos os projetos");
         }
 
         static void filtrarTarefas()
