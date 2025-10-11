@@ -78,6 +78,7 @@ namespace projeto_gerenciamento_de_projetos
                         filtrarTarefasPorProjeto();
                         break;
                     case 10:
+                        filtrarTarefas();
                         break;
                     case 11:
                         break;
@@ -278,6 +279,75 @@ namespace projeto_gerenciamento_de_projetos
             }
             else
                 Utils.MensagemErro("Projeto não encontrado.");
+        }
+
+        static void filtrarTarefas()
+        {
+            Utils.Titulo("FILTRAR TAREFAS (GERAL)");
+            if (itens.Itens.Count() > 0)
+            {
+                Console.Write("\n Lista de Filtros:\n" +
+                        " 1 - Status\n" +
+                        " 2 - Prioridade\n" +
+                        " Digite o tipo de filtro: ");
+                int filtro = Utils.lerMinMax(Console.ReadLine(), 1, 2, " Tipo de filtro inválido. Digite outra opção: ");
+                if (filtro == 1)
+                {
+                    Console.Write("\n Lista de Status:\n" +
+                        " 1 - Aberta\n" +
+                        " 2 - Fechada\n" +
+                        " 3 - Cancelada\n" +
+                        " Digite o tipo de Status: ");
+                    int filtroStatus = Utils.lerMinMax(Console.ReadLine(), 1, 3, " Tipo de status inválido. Digite outra opção: ");
+                    string status = filtroStatus == 1 ? "Aberta" : filtroStatus == 2 ? "Fechada" : "Cancelada";
+                    Utils.Titulo("FILTRAR TAREFAS POR STATUS");
+                    foreach (Projeto projeto in itens.Itens)
+                    {
+                        Console.WriteLine($" Projeto: {projeto.Nome}");
+                        if (projeto.tarefasPorStatus(status).Count() > 0)
+                        {
+                            foreach (Tarefa t in projeto.tarefasPorStatus(status))
+                            {
+                                Console.WriteLine($"\n Data: {t.DataCriacao}\n" +
+                                    $" Descrição: {t.Descricao}\n" +
+                                    $" Prioridade: {t.Prioridade}\n" +
+                                    $" Status: {t.Status}\n");
+                            }
+                        }
+                        else
+                            Console.WriteLine(" Nenhumna tarefa encontrada.\n");
+                    }
+                }
+                else
+                {
+                    Console.Write("\n Lista de Prioridades:\n" +
+                        " 1- Alta\n" +
+                        " 2- Média\n" +
+                        " 3- Baixa\n" +
+                        " Digite o tipo de Prioridade: ");
+                    int filtroPrioridade = Utils.lerMinMax(Console.ReadLine(), 1, 3, " Tipo de prioridade inválido. Digite outra opção: ");
+                    Utils.Titulo("FILTRAR TAREFAS POR PRIORIDADE");
+                    foreach (Projeto projeto in itens.Itens)
+                    {
+                        Console.WriteLine($" Projeto: {projeto.Nome}");
+                        if (projeto.tarefasPorPrioridade(filtroPrioridade).Count() > 0)
+                        {
+                            foreach (Tarefa t in projeto.tarefasPorPrioridade(filtroPrioridade))
+                            {
+                                Console.WriteLine($"\n Data: {t.DataCriacao}\n" +
+                                    $" Descrição: {t.Descricao}\n" +
+                                    $" Prioridade: {t.Prioridade}\n" +
+                                    $" Status: {t.Status}\n");
+                            }
+                        }
+                        else
+                            Console.WriteLine(" Nenhumna tarefa encontrada.\n");
+                    }
+                }
+                Utils.MensagemSucesso("Filtro completo.");
+            }
+            else
+                Utils.MensagemErro("Nenhum projeto cadastrado");
         }
     }
 }
