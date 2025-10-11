@@ -68,15 +68,19 @@ namespace projeto_gerenciamento_de_projetos
                         concluirTarefa();
                         break;
                     case 6:
+                        cancelarTarefa();
                         break;
                     case 7:
+                        reabrirTarefa();
                         break;
                     case 8:
+                        listarTarefas();
                         break;
                     case 9:
                         filtrarTarefasPorProjeto();
                         break;
                     case 10:
+                        filtrarTarefas();
                         break;
                     case 11:
                         resumoGeral();
@@ -135,7 +139,12 @@ namespace projeto_gerenciamento_de_projetos
                 Tarefa tarefa = projeto.buscarTarefa(new Tarefa(titulo));
                 if (tarefa != null)
                 {
-                    tarefa.concluir();
+                    if (tarefa.Status == "Aberta")
+                    {
+                        tarefa.concluir();
+                    }
+                    else
+                        Utils.MensagemErro($"Não é possível fechar uma Tarefa {tarefa.Status}");
                 }
                 else
                     Utils.MensagemErro("Tarefa não enontrada");
@@ -145,7 +154,100 @@ namespace projeto_gerenciamento_de_projetos
 
         }
 
+        static void listarTarefas()
+        {
+            Utils.Titulo("LISTAR TAREFAS");
+            Console.Write("Informe o nome do projeto: ");
+            string nome = Console.ReadLine();
+            Projeto projeto = itens.buscar(new Projeto(nome));
+            if (projeto != null)
+            {
+                int qtdTarefas = projeto.totalAberta() + projeto.totalFechadas();
+                if (qtdTarefas > 0)
+                {
+                    Console.WriteLine($"Tarefas de {projeto.Nome}\n");
+                    foreach (Tarefa trf in projeto.Tarefas)
+                    {
+                        if (trf.Status != "Cancelada")
+                        {
+                            string prioridade = trf.Prioridade == 1 ? "Alta" : trf.Prioridade == 2 ? "Média" : "Baixa";
+                            Console.WriteLine($"Titulo: {trf.Titulo}\n" +
+                                $"Descrição: {trf.Descricao}\n" +
+                                $"Prioridade: {prioridade}\n" +
+                                $"Status: {trf.Status} \n" +
+                                $"Inicio: {trf.DataCriacao}\n");
+                            if (trf.DataConclusao != null)
+                            {
+                                Console.WriteLine($"Finalizado: {trf.DataConclusao}");
+                            }
+                        }
+                    }
+                    Utils.MensagemSucesso(" Listando tarefas abertas e concluidas...");
+                }
+                else
+                {
+                    Utils.MensagemErro("Nenhuma tarefa no projeto");
+                }
 
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado");
+        }
+      
+        static void reabrirTarefa()
+        {
+            Utils.Titulo("REABRIR TAREFA");
+            Console.Write("Informe o nome do projeto: ");
+            string nome = Console.ReadLine();
+            Projeto projeto = itens.buscar(new Projeto(nome));
+            if (projeto != null)
+            {
+                Console.Write("Informe o título da tarefa: ");
+                string titulo = Console.ReadLine();
+                Tarefa tarefa = projeto.buscarTarefa(new Tarefa(titulo));
+                if (tarefa != null)
+                {
+                    if (tarefa.Status == "Concluída")
+                    {
+                        tarefa.reabrir();
+                    }
+                    else
+                        Utils.MensagemErro($"Não é possível reabrir uma Tarefa {tarefa.Status}");
+                }
+                else
+                    Utils.MensagemErro("Tarefa não enontrada");
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado.");
+        }
+                
+        static void cancelarTarefa()
+        {
+            Utils.Titulo("CANCELAR TAREFA");
+            Console.Write("Informe o nome do projeto: ");
+            string nome = Console.ReadLine();
+            Projeto projeto = itens.buscar(new Projeto(nome));
+            if (projeto != null)
+            {
+                Console.Write("Informe o título da tarefa: ");
+                string titulo = Console.ReadLine();
+                Tarefa tarefa = projeto.buscarTarefa(new Tarefa(titulo));
+                if (tarefa != null)
+                {
+                    if (tarefa.Status != "Fechada" && tarefa.Status != "Cancelada")
+                    {
+                        tarefa.cancelar();
+                    }
+                    else
+                        Utils.MensagemErro($"Não é possível fechar uma Tarefa {tarefa.Status}");
+                }
+                else
+                    Utils.MensagemErro("Tarefa não enontrada");
+            }
+            else
+                Utils.MensagemErro("Projeto não encontrado.");
+        }
+        
         static void pesquisarProjeto()
         {
             Utils.Titulo("PESQUISAR PROJETO (1/2)");
@@ -248,6 +350,7 @@ namespace projeto_gerenciamento_de_projetos
             else
                 Utils.MensagemErro("Projeto não encontrado.");
         }
+      
         static void resumoGeral()
         {
             Utils.Titulo("RESUMO GERAL");
@@ -268,6 +371,75 @@ namespace projeto_gerenciamento_de_projetos
                 $"Quantidade de tarefas fechadas: {totalFechadas}\n" +
                 $"Percentual de conclusão: {percConclusao.ToString("f")}\n");
             Utils.MensagemSucesso("Visão geral de todos os projetos");
+        }
+
+        static void filtrarTarefas()
+        {
+            Utils.Titulo("FILTRAR TAREFAS (GERAL)");
+            if (itens.Itens.Count() > 0)
+            {
+                Console.Write("\n Lista de Filtros:\n" +
+                        " 1 - Status\n" +
+                        " 2 - Prioridade\n" +
+                        " Digite o tipo de filtro: ");
+                int filtro = Utils.lerMinMax(Console.ReadLine(), 1, 2, " Tipo de filtro inválido. Digite outra opção: ");
+                if (filtro == 1)
+                {
+                    Console.Write("\n Lista de Status:\n" +
+                        " 1 - Aberta\n" +
+                        " 2 - Fechada\n" +
+                        " 3 - Cancelada\n" +
+                        " Digite o tipo de Status: ");
+                    int filtroStatus = Utils.lerMinMax(Console.ReadLine(), 1, 3, " Tipo de status inválido. Digite outra opção: ");
+                    string status = filtroStatus == 1 ? "Aberta" : filtroStatus == 2 ? "Fechada" : "Cancelada";
+                    Utils.Titulo("FILTRAR TAREFAS POR STATUS");
+                    foreach (Projeto projeto in itens.Itens)
+                    {
+                        Console.WriteLine($" Projeto: {projeto.Nome}");
+                        if (projeto.tarefasPorStatus(status).Count() > 0)
+                        {
+                            foreach (Tarefa t in projeto.tarefasPorStatus(status))
+                            {
+                                Console.WriteLine($"\n Data: {t.DataCriacao}\n" +
+                                    $" Descrição: {t.Descricao}\n" +
+                                    $" Prioridade: {t.Prioridade}\n" +
+                                    $" Status: {t.Status}\n");
+                            }
+                        }
+                        else
+                            Console.WriteLine(" Nenhumna tarefa encontrada.\n");
+                    }
+                }
+                else
+                {
+                    Console.Write("\n Lista de Prioridades:\n" +
+                        " 1- Alta\n" +
+                        " 2- Média\n" +
+                        " 3- Baixa\n" +
+                        " Digite o tipo de Prioridade: ");
+                    int filtroPrioridade = Utils.lerMinMax(Console.ReadLine(), 1, 3, " Tipo de prioridade inválido. Digite outra opção: ");
+                    Utils.Titulo("FILTRAR TAREFAS POR PRIORIDADE");
+                    foreach (Projeto projeto in itens.Itens)
+                    {
+                        Console.WriteLine($" Projeto: {projeto.Nome}");
+                        if (projeto.tarefasPorPrioridade(filtroPrioridade).Count() > 0)
+                        {
+                            foreach (Tarefa t in projeto.tarefasPorPrioridade(filtroPrioridade))
+                            {
+                                Console.WriteLine($"\n Data: {t.DataCriacao}\n" +
+                                    $" Descrição: {t.Descricao}\n" +
+                                    $" Prioridade: {t.Prioridade}\n" +
+                                    $" Status: {t.Status}\n");
+                            }
+                        }
+                        else
+                            Console.WriteLine(" Nenhumna tarefa encontrada.\n");
+                    }
+                }
+                Utils.MensagemSucesso("Filtro completo.");
+            }
+            else
+                Utils.MensagemErro("Nenhum projeto cadastrado");
         }
     }
 }
