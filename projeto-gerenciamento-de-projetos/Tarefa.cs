@@ -56,7 +56,8 @@ namespace projeto_gerenciamento_de_projetos
 
         public void cancelar()
         {
-
+            this.Status = "Cancelada";
+            Utils.MensagemSucesso($"Tarefa '{this.Titulo}' cancelada");
         }
 
         public void reabrir()
