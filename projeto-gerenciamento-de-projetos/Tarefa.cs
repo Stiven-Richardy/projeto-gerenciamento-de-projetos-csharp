@@ -8,6 +8,7 @@ namespace projeto_gerenciamento_de_projetos
 {
     internal class Tarefa
     {
+        static int idAtual = 0;
         private int id;
         private string titulo;
         private string descricao;
@@ -34,20 +35,36 @@ namespace projeto_gerenciamento_de_projetos
             DataCriacao = dataCriacao;
             DataConclusao = dataConclusao;
         }
+        
+        public Tarefa(string titulo, string descricao, int prioridade)
+        {
+            Id = idAtual++;
+            Titulo = titulo;
+            Descricao = descricao;
+            Prioridade = prioridade;
+            Status = "Aberta";
+            DataCriacao = DateTime.Now;
+        }
+        public Tarefa(string titulo):this(titulo, "", 0) { }
 
         public void concluir()
         {
-
+            this.DataConclusao = DateTime.Now;
+            this.Status = "Fechada";
+            Utils.MensagemSucesso($"Tarefa '{this.Titulo}' concluída");
         }
 
         public void cancelar()
         {
-
+            this.Status = "Cancelada";
+            Utils.MensagemSucesso($"Tarefa '{this.Titulo}' cancelada");
         }
 
         public void reabrir()
         {
-
+            this.DataConclusao = null;
+            this.Status = "Aberta";
+            Utils.MensagemSucesso($"Tarefa '{this.Titulo}' reaberta");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,6 +9,7 @@ namespace projeto_gerenciamento_de_projetos
 {
     internal class Projeto
     {
+        static int idAtual = 0;
         private int id;
         private string nome;
         private List<Tarefa> tarefas = new List<Tarefa>();
@@ -16,45 +18,58 @@ namespace projeto_gerenciamento_de_projetos
         public string Nome { get => nome; set => nome = value; }
         public List<Tarefa> Tarefas { get => tarefas; set => tarefas = value; }
 
-        public Projeto(int id, string nome)
+        public Projeto(string nome)
         {
-            Id = id;
+            Id = ++idAtual;
             Nome = nome;
         }
 
         public void adicionarTarefa(Tarefa t)
         {
+            if (buscarTarefa(t) == null)
+            {
+                Tarefas.Add(t);
+                Utils.MensagemSucesso("Tarefa adicionada");
+            }
+            else
+                Utils.MensagemErro("Tarefa já existe no projeto");
 
         }
 
         public bool removerTarefa(Tarefa t)
         {
-            return true;
+            bool tarefaRemovida = false;
+            if (buscarTarefa(t) != null)
+            {
+                Tarefas.Remove(t);
+                tarefaRemovida = true;
+            }
+            return tarefaRemovida;
         }
 
         public Tarefa buscarTarefa(Tarefa t)
         {
-            return t;
+            return Tarefas.Find(tr => tr.Titulo == t.Titulo);
         }
 
         public List<Tarefa> tarefasPorStatus(string s)
         {
-            return tarefas;
+            return Tarefas.FindAll(tr => tr.Status == s);
         }
 
         public List<Tarefa> tarefasPorPrioridade(int p)
         {
-            return tarefas;
+            return Tarefas.FindAll(tr => tr.Prioridade == p);
         }
 
         public int totalAberta()
         {
-            return 0;
+            return Tarefas.Count(t => t.Status == "Aberta");
         }
 
         public int totalFechadas()
         {
-            return 0;
+            return Tarefas.Count(t => t.Status == "Fechada");
         }
     }
 }
