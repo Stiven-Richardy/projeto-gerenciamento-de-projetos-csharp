@@ -16,19 +16,15 @@ namespace projeto_gerenciamento_de_projetos
 
         public bool adicionar(Projeto p)
         {
-            bool projetoAdicionado = false;
-            if (buscar(p) == null)
-            {
-                itens.Add(p);
-                projetoAdicionado = true;
-            }
+            itens.Add(p);
+            bool projetoAdicionado = true;
             return projetoAdicionado;
         }
 
         public bool remover(Projeto p)
         {
             bool projetoRemovido = false;
-            if (buscar(p) != null)
+            if (buscar(p.Nome) != null)
             {
                 itens.Remove(p);
                 projetoRemovido = true;
@@ -36,9 +32,9 @@ namespace projeto_gerenciamento_de_projetos
             return projetoRemovido;
         }
 
-        public Projeto buscar(Projeto p)
+        public Projeto buscar(string nome)
         {
-            Projeto projetoAchado = itens.Find(pp => pp.Nome == p.Nome);
+            Projeto projetoAchado = itens.Find(p => p.Nome.Equals(nome, StringComparison.OrdinalIgnoreCase));
             return projetoAchado;
         }
 

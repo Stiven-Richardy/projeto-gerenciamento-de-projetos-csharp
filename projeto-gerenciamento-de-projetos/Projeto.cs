@@ -20,7 +20,7 @@ namespace projeto_gerenciamento_de_projetos
 
         public Projeto(string nome)
         {
-            Id = idAtual++;
+            Id = ++idAtual;
             Nome = nome;
         }
 
@@ -38,7 +38,13 @@ namespace projeto_gerenciamento_de_projetos
 
         public bool removerTarefa(Tarefa t)
         {
-            return true;
+            bool tarefaRemovida = false;
+            if (buscarTarefa(t) != null)
+            {
+                Tarefas.Remove(t);
+                tarefaRemovida = true;
+            }
+            return tarefaRemovida;
         }
 
         public Tarefa buscarTarefa(Tarefa t)
